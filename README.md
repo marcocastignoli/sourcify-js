@@ -1,4 +1,4 @@
-# Sourcify NodeJS Library
+# Sourcify Node.js Library
 
 ## Install
 ```yarn add sourcify-js```
