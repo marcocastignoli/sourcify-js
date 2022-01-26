@@ -1,7 +1,44 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.multiply = void 0;
-function multiply(a, b) {
-    return a * b;
+exports.filesTree = void 0;
+const https_1 = require("https");
+function filesTree(address, chainId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            var options = {
+                'method': 'GET',
+                'hostname': 'staging.sourcify.dev',
+                'path': `/server/files/tree/any/${chainId}/${address}`
+            };
+            var req = (0, https_1.request)(options, function (res) {
+                var chunks = [];
+                res.on("data", function (chunk) {
+                    chunks.push(chunk);
+                });
+                res.on("end", function () {
+                    try {
+                        var body = Buffer.concat(chunks);
+                        resolve(JSON.parse(body.toString()));
+                    }
+                    catch (e) {
+                        reject();
+                    }
+                });
+                res.on("error", function (error) {
+                    reject();
+                });
+            });
+            req.end();
+        });
+    });
 }
-exports.multiply = multiply;
+exports.filesTree = filesTree;

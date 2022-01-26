@@ -1,3 +1,3 @@
-import { multiply } from './lib'
+import { filesTree } from './lib'
 
-export { multiply }
+export { filesTree }

@@ -1,1 +1,1 @@
-export declare function multiply(a: number, b: number): number;
+export declare function filesTree(address: string, chainId: number): Promise<unknown>;
