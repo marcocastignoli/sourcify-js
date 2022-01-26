@@ -1,6 +1,6 @@
 {
-  "name": "sourcify-js",
-  "version": "1.1.0",
+  "name": "typescript-minimal-project",
+  "version": "1.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "license": "MIT",
@@ -19,5 +19,6 @@
     "build:esm": "rm -rf dist/esm && npx tsc --project esm.tsconfig.json",
     "build:types": "rm -rf dist/types && tsc -p tsconfig.types.json",
     "test": "ts-mocha test/**/*.ts"
-  }
+  },
+  "dependencies": {}
 }
