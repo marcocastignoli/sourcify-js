@@ -1,7 +1,14 @@
-# Typescript minimal project
+# Sourcify NodeJS Library
 
-* basic testing with mocha and chai
-* supports cjs, esm and types
+## Install
+```yarn add sourcify-js```
+
+## Get the list of files given address and chainId
+https://sourcifyeth.github.io/docs/api/server/get-file-tree-all
+```javascript
+import { filesTree } from 'sourcify-js';
+const result = await filesTree('0x1081Fff912072666aA8292a46B290B04c69EdbfC', 4); // contract_address, chainId
+```
 
 ## build
 
@@ -10,6 +17,3 @@
 ## test
 
 ```yarn test```
-
-## publish
-```yarn publish```
