@@ -18,6 +18,7 @@ const result = await sourcify.filesTree('0x1081Fff912072666aA8292a46B290B04c69Ed
 https://sourcifyeth.github.io/docs/api/#verification-api-v2---session-based
 ```javascript
 import SourcifyJS from 'sourcify-js';
+import {promises} from 'fs';
 
 const sourcify = new SourcifyJS('https://staging.sourcify.dev')
 const buffer = await promises.readFile(`artifacts/build-info/5db050a66d1a3d56db16d1fa718d837e.json`)
