@@ -25,5 +25,8 @@
     "build:types": "rm -rf dist/types && tsc -p tsconfig.types.json",
     "test": "ts-mocha test/**/*.ts"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.25.0",
+    "form-data": "^4.0.0"
+  }
 }

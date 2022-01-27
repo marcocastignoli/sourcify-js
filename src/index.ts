@@ -1,3 +1,3 @@
-import { filesTree } from './lib'
+import SourcifyJS from './SourcifyJS'
 
-export { filesTree }
+export default SourcifyJS
