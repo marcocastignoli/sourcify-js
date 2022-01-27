@@ -1,10 +1,15 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import * as FormData from 'form-data'
 
-interface Contract {
-  meta: string,
+interface ValidatedContract {
+  verificationId: string,
   address: string,
   chainId: string
+}
+
+interface Contract {
+  address: string,
+  name: string
 }
 
 export default class SourcifyJS {
@@ -15,15 +20,12 @@ export default class SourcifyJS {
     this.cookies = []
   }
   public async filesTree(address: string, chainId: number) {
-    var config: AxiosRequestConfig = {
+    const config: AxiosRequestConfig = {
       method: 'get',
       url: `${this.url}/server/files/tree/any/${chainId}/${address}`
     };
     let response = await axios(config)
     return response.data
-  }
-  verify(contracts: Contract[]) {
-    //contracts
   }
   public async inputFiles(file: Buffer) {
     const data = new FormData();
@@ -31,7 +33,7 @@ export default class SourcifyJS {
 
     const config: AxiosRequestConfig = {
       method: 'POST',
-      url: 'https://staging.sourcify.dev/server/input-files',
+      url: `${this.url}/server/input-files`,
       headers: {
         ...data.getHeaders()
       },
@@ -44,9 +46,9 @@ export default class SourcifyJS {
   }
 
   public async sessionData() {
-    var config: AxiosRequestConfig = {
+    const config: AxiosRequestConfig = {
       method: 'get',
-      url: 'https://staging.sourcify.dev/server/session-data',
+      url: `${this.url}/server/session-data`,
       headers: {
         'Cookie': this.cookies.join(';')
       }
@@ -55,5 +57,57 @@ export default class SourcifyJS {
     let result = await axios(config)
     return result.data
 
+  }
+
+  public async restartSession() {
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      url: `${this.url}/restart-session`,
+      headers: {
+        'Cookie': this.cookies.join(';')
+      }
+    };
+    await axios(config)
+    this.cookies = []
+  }
+
+  public async verifyValidated(contracts: ValidatedContract[]) {
+    const data = JSON.stringify({
+      contracts
+    });
+
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      url: `${this.url}/server/verify-validated`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': this.cookies.join(';')
+      },
+      data: data
+    };
+
+    const result = await axios(config)
+    return result.data
+  }
+
+  public async verify(chainId: number, contracts: Contract[], metafile: Buffer) {
+    let contractsNames = contracts.map(c => c.name)
+    const result = await this.inputFiles(metafile)
+    let contractsToVerify: ValidatedContract[] = result.contracts
+      .filter(c => {
+        return true
+          && contractsNames.includes(c.name)
+          && Object.keys(c?.files?.missing).length === 0
+          && Object.keys(c?.files?.invalid).length === 0
+      })
+      .map(c => {
+        return {
+          verificationId: c.verificationId,
+          address: contracts.find(c1 => c1.name === c.name).address,
+          chainId: `${chainId}`
+        }
+      })
+    const resultVerification = await this.verifyValidated(contractsToVerify)
+    return resultVerification
   }
 }

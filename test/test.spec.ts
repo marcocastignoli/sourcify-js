@@ -17,4 +17,18 @@ describe('Get file tree', () => {
     const result = await sourcify.sessionData()
     expect(result['contracts'].length).to.above(0)
   })
+  it('should verify contracts', async () => {
+    const sourcify = new SourcifyJS('https://staging.sourcify.dev')
+    const buffer = await promises.readFile(`test/meta_test1.json`)
+
+    const result = await sourcify.verify(4, [
+      {
+        name: 'Diamond',
+        address: '0xcdbD9188d1788AFC260785B34A005e2ABadd7868'
+      }
+    ],
+    buffer)
+
+    console.log(result)
+  })
 });
