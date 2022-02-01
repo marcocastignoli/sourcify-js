@@ -11,7 +11,7 @@ interface Contract {
 export default class SourcifyJS {
     url: string;
     cookies: string[];
-    constructor(environment: string);
+    constructor(environment?: string);
     filesTree(address: string, chainId: number): Promise<any>;
     inputFiles(file: Buffer): Promise<any>;
     sessionData(): Promise<any>;

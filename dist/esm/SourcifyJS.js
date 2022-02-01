@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 import * as FormData from 'form-data';
 export default class SourcifyJS {
-    constructor(environment) {
+    constructor(environment = 'https://sourcify.dev') {
         this.url = environment;
         this.cookies = [];
     }
@@ -90,10 +90,12 @@ export default class SourcifyJS {
             let contractsToVerify = result.contracts
                 .filter(c => {
                 var _a, _b;
+                const missing = ((_a = c === null || c === void 0 ? void 0 : c.files) === null || _a === void 0 ? void 0 : _a.missing) || {};
+                const invalid = ((_b = c === null || c === void 0 ? void 0 : c.files) === null || _b === void 0 ? void 0 : _b.invalid) || {};
                 return true
                     && contractsNames.includes(c.name)
-                    && Object.keys((_a = c === null || c === void 0 ? void 0 : c.files) === null || _a === void 0 ? void 0 : _a.missing).length === 0
-                    && Object.keys((_b = c === null || c === void 0 ? void 0 : c.files) === null || _b === void 0 ? void 0 : _b.invalid).length === 0;
+                    && Object.keys(missing).length === 0
+                    && Object.keys(invalid).length === 0;
             })
                 .map(c => {
                 return {
