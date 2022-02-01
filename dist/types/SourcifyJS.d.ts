@@ -13,6 +13,7 @@ export default class SourcifyJS {
     cookies: string[];
     constructor(environment?: string);
     filesTree(address: string, chainId: number): Promise<any>;
+    getABI(address: string, chainId: number): Promise<any>;
     inputFiles(file: Buffer): Promise<any>;
     sessionData(): Promise<any>;
     restartSession(): Promise<void>;

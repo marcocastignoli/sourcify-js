@@ -24,6 +24,17 @@ export default class SourcifyJS {
             return response.data;
         });
     }
+    getABI(address, chainId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = yield this.filesTree(address, chainId);
+            const config = {
+                method: 'get',
+                url: data.files[0]
+            };
+            let response = yield axios(config);
+            return response.data.output.abi;
+        });
+    }
     inputFiles(file) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = new FormData();

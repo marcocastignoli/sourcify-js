@@ -27,6 +27,15 @@ export default class SourcifyJS {
     let response = await axios(config)
     return response.data
   }
+  public async getABI(address: string, chainId: number) {
+    const data = await this.filesTree(address, chainId)
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      url: data.files[0]
+    };
+    let response = await axios(config)
+    return response.data.output.abi
+  }
   public async inputFiles(file: Buffer) {
     const data = new FormData();
     data.append('files', file);

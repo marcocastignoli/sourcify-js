@@ -2,7 +2,7 @@ import SourcifyJS from '../src/index';
 import { expect } from 'chai';
 import {promises} from 'fs';
 
-describe('Get file tree', () => {
+describe('Test sourficy-js', () => {
   it('should return eturns repository URLs for every file in the source tree for the desired chain and address', async () => {
     const sourcify = new SourcifyJS()
     const result = await sourcify.filesTree('0xcdbD9188d1788AFC260785B34A005e2ABadd7868', 4);
@@ -34,4 +34,9 @@ describe('Get file tree', () => {
     })
     expect(diamondContract.status).to.be.eq('perfect')
   })
+  it('should return the ABI', async () => {
+    const sourcify = new SourcifyJS()
+    const result = await sourcify.getABI('0xcdbD9188d1788AFC260785B34A005e2ABadd7868', 4);
+    expect(result[0].type).to.be.eq('constructor')
+  });
 });
