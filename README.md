@@ -6,7 +6,7 @@ yarn add sourcify-js
 ```
 
 ## Get the list of files given address and chainId
-https://sourcifyeth.github.io/docs/api/server/get-file-tree-all
+https://docs.sourcify.dev/docs/api/server/get-file-tree-all
 ```javascript
 import SourcifyJS from 'sourcify-js';
 
@@ -15,7 +15,7 @@ const result = await sourcify.filesTree('0x1081Fff912072666aA8292a46B290B04c69Ed
 ```
 
 ## Verify contracts
-https://sourcifyeth.github.io/docs/api/#verification-api-v2---session-based
+https://docs.sourcify.dev/docs/api/#verification-api-v2---session-based
 ```javascript
 import SourcifyJS from 'sourcify-js';
 import {promises} from 'fs';
