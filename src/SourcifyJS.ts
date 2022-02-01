@@ -15,7 +15,7 @@ interface Contract {
 export default class SourcifyJS {
   url: string
   cookies: string[]
-  constructor(environment: string) {
+  constructor(environment: string = 'https://sourcify.dev') {
     this.url = environment
     this.cookies = []
   }
@@ -95,10 +95,12 @@ export default class SourcifyJS {
     const result = await this.inputFiles(metafile)
     let contractsToVerify: ValidatedContract[] = result.contracts
       .filter(c => {
+        const missing = c?.files?.missing || {}
+        const invalid = c?.files?.invalid || {}
         return true
           && contractsNames.includes(c.name)
-          && Object.keys(c?.files?.missing).length === 0
-          && Object.keys(c?.files?.invalid).length === 0
+          && Object.keys(missing).length === 0
+          && Object.keys(invalid).length === 0
       })
       .map(c => {
         return {

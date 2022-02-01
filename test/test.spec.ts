@@ -4,12 +4,12 @@ import {promises} from 'fs';
 
 describe('Get file tree', () => {
   it('should return eturns repository URLs for every file in the source tree for the desired chain and address', async () => {
-    const sourcify = new SourcifyJS('https://staging.sourcify.dev')
-    const result = await sourcify.filesTree('0x1081Fff912072666aA8292a46B290B04c69EdbfC', 4);
+    const sourcify = new SourcifyJS()
+    const result = await sourcify.filesTree('0xcdbD9188d1788AFC260785B34A005e2ABadd7868', 4);
     expect(result['status']).to.equal('full');
   });
   it('should upload file and retrieve using session', async () => {
-    const sourcify = new SourcifyJS('https://staging.sourcify.dev')
+    const sourcify = new SourcifyJS()
     const buffer = await promises.readFile(`test/meta_test1.json`)
 
     await sourcify.inputFiles(buffer)
@@ -18,7 +18,7 @@ describe('Get file tree', () => {
     expect(result['contracts'].length).to.above(0)
   })
   it('should verify contracts', async () => {
-    const sourcify = new SourcifyJS('https://staging.sourcify.dev')
+    const sourcify = new SourcifyJS()
     const buffer = await promises.readFile(`test/meta_test1.json`)
 
     const result = await sourcify.verify(4, [
@@ -29,6 +29,9 @@ describe('Get file tree', () => {
     ],
     buffer)
 
-    console.log(result)
+    const diamondContract = result.contracts.find(c => {
+      return c.name === 'Diamond'
+    })
+    expect(diamondContract.status).to.be.eq('perfect')
   })
 });
