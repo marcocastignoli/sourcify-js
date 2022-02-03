@@ -34,7 +34,7 @@ export default class SourcifyJS {
       url: data.files[0]
     };
     let response = await axios(config)
-    return response.data.output.abi
+    return {abi: response.data.output.abi, name: Object.values(response.data.settings.compilationTarget)[0]}
   }
   public async inputFiles(file: Buffer) {
     const data = new FormData();

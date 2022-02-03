@@ -32,7 +32,7 @@ export default class SourcifyJS {
                 url: data.files[0]
             };
             let response = yield axios(config);
-            return response.data.output.abi;
+            return { abi: response.data.output.abi, name: Object.values(response.data.settings.compilationTarget)[0] };
         });
     }
     inputFiles(file) {
