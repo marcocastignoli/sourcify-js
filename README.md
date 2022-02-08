@@ -5,6 +5,14 @@
 yarn add sourcify-js
 ```
 
+## Constructor arguments
+```javascript
+constructor(serverUrl: string = 'https://sourcify.dev/server', repositoryUrl: string = 'https://repo.sourcify.dev') {
+...
+}
+```
+
+
 ## Get the list of files given address and chainId
 https://docs.sourcify.dev/docs/api/server/get-file-tree-all
 ```javascript
@@ -37,7 +45,7 @@ const result = await sourcify.verify(
 ## Get ABI
 ```javascript
 const sourcify = new SourcifyJS()
-const result = await sourcify.getABI('0xcdbD9188d1788AFC260785B34A005e2ABadd7868', 4);
+const {abi, name} = await sourcify.getABI('0xcdbD9188d1788AFC260785B34A005e2ABadd7868', 4);
 ```
 
 ## build
