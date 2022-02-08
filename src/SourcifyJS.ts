@@ -13,28 +13,34 @@ interface Contract {
 }
 
 export default class SourcifyJS {
-  url: string
+  serverUrl: string
+  repositoryUrl: string
   cookies: string[]
-  constructor(environment: string = 'https://sourcify.dev') {
-    this.url = environment
+  constructor(serverUrl: string = 'https://sourcify.dev/server', repositoryUrl: string = 'https://repo.sourcify.dev') {
+    this.serverUrl = serverUrl
+    this.repositoryUrl = repositoryUrl
     this.cookies = []
   }
   public async filesTree(address: string, chainId: number) {
     const config: AxiosRequestConfig = {
       method: 'get',
-      url: `${this.url}/server/files/tree/any/${chainId}/${address}`
+      url: `${this.serverUrl}/files/tree/any/${chainId}/${address}`
+    };
+    let response = await axios(config)
+    return response.data
+  }
+  public async metadata(address: string, chainId: number) {
+    console.log(`${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`)
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      url: `${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`
     };
     let response = await axios(config)
     return response.data
   }
   public async getABI(address: string, chainId: number) {
-    const data = await this.filesTree(address, chainId)
-    const config: AxiosRequestConfig = {
-      method: 'get',
-      url: data.files[0]
-    };
-    let response = await axios(config)
-    return {abi: response.data.output.abi, name: Object.values(response.data.settings.compilationTarget)[0]}
+    const response = await this.metadata(address, chainId)
+    return {abi: response.output.abi, name: Object.values(response.settings.compilationTarget)[0]}
   }
   public async inputFiles(file: Buffer) {
     const data = new FormData();
@@ -42,7 +48,7 @@ export default class SourcifyJS {
 
     const config: AxiosRequestConfig = {
       method: 'POST',
-      url: `${this.url}/server/input-files`,
+      url: `${this.serverUrl}/input-files`,
       headers: {
         ...data.getHeaders()
       },
@@ -57,7 +63,7 @@ export default class SourcifyJS {
   public async sessionData() {
     const config: AxiosRequestConfig = {
       method: 'get',
-      url: `${this.url}/server/session-data`,
+      url: `${this.serverUrl}/session-data`,
       headers: {
         'Cookie': this.cookies.join(';')
       }
@@ -71,7 +77,7 @@ export default class SourcifyJS {
   public async restartSession() {
     const config: AxiosRequestConfig = {
       method: 'post',
-      url: `${this.url}/restart-session`,
+      url: `${this.serverUrl}/restart-session`,
       headers: {
         'Cookie': this.cookies.join(';')
       }
@@ -87,7 +93,7 @@ export default class SourcifyJS {
 
     const config: AxiosRequestConfig = {
       method: 'post',
-      url: `${this.url}/server/verify-validated`,
+      url: `${this.serverUrl}/verify-validated`,
       headers: {
         'Content-Type': 'application/json',
         'Cookie': this.cookies.join(';')
