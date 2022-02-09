@@ -9,10 +9,12 @@ interface Contract {
     name: string;
 }
 export default class SourcifyJS {
-    url: string;
+    serverUrl: string;
+    repositoryUrl: string;
     cookies: string[];
-    constructor(environment?: string);
+    constructor(serverUrl?: string, repositoryUrl?: string);
     filesTree(address: string, chainId: number): Promise<any>;
+    metadata(address: string, chainId: number): Promise<any>;
     getABI(address: string, chainId: number): Promise<{
         abi: any;
         name: unknown;

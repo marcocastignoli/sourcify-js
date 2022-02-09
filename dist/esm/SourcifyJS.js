@@ -10,15 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 import * as FormData from 'form-data';
 export default class SourcifyJS {
-    constructor(environment = 'https://sourcify.dev') {
-        this.url = environment;
+    constructor(serverUrl = 'https://sourcify.dev/server', repositoryUrl = 'https://repo.sourcify.dev') {
+        this.serverUrl = serverUrl;
+        this.repositoryUrl = repositoryUrl;
         this.cookies = [];
     }
     filesTree(address, chainId) {
         return __awaiter(this, void 0, void 0, function* () {
             const config = {
                 method: 'get',
-                url: `${this.url}/server/files/tree/any/${chainId}/${address}`
+                url: `${this.serverUrl}/files/tree/any/${chainId}/${address}`
+            };
+            let response = yield axios(config);
+            return response.data;
+        });
+    }
+    metadata(address, chainId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(`${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`);
+            const config = {
+                method: 'get',
+                url: `${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`
             };
             let response = yield axios(config);
             return response.data;
@@ -26,13 +38,8 @@ export default class SourcifyJS {
     }
     getABI(address, chainId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = yield this.filesTree(address, chainId);
-            const config = {
-                method: 'get',
-                url: data.files[0]
-            };
-            let response = yield axios(config);
-            return { abi: response.data.output.abi, name: Object.values(response.data.settings.compilationTarget)[0] };
+            const response = yield this.metadata(address, chainId);
+            return { abi: response.output.abi, name: Object.values(response.settings.compilationTarget)[0] };
         });
     }
     inputFiles(file) {
@@ -41,7 +48,7 @@ export default class SourcifyJS {
             data.append('files', file);
             const config = {
                 method: 'POST',
-                url: `${this.url}/server/input-files`,
+                url: `${this.serverUrl}/input-files`,
                 headers: Object.assign({}, data.getHeaders()),
                 data: data
             };
@@ -54,7 +61,7 @@ export default class SourcifyJS {
         return __awaiter(this, void 0, void 0, function* () {
             const config = {
                 method: 'get',
-                url: `${this.url}/server/session-data`,
+                url: `${this.serverUrl}/session-data`,
                 headers: {
                     'Cookie': this.cookies.join(';')
                 }
@@ -67,7 +74,7 @@ export default class SourcifyJS {
         return __awaiter(this, void 0, void 0, function* () {
             const config = {
                 method: 'post',
-                url: `${this.url}/restart-session`,
+                url: `${this.serverUrl}/restart-session`,
                 headers: {
                     'Cookie': this.cookies.join(';')
                 }
@@ -83,7 +90,7 @@ export default class SourcifyJS {
             });
             const config = {
                 method: 'post',
-                url: `${this.url}/server/verify-validated`,
+                url: `${this.serverUrl}/verify-validated`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Cookie': this.cookies.join(';')
