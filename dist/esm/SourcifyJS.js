@@ -27,7 +27,6 @@ export default class SourcifyJS {
     }
     metadata(address, chainId) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(`${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`);
             const config = {
                 method: 'get',
                 url: `${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`

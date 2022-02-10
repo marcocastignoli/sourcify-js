@@ -30,7 +30,6 @@ export default class SourcifyJS {
     return response.data
   }
   public async metadata(address: string, chainId: number) {
-    console.log(`${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`)
     const config: AxiosRequestConfig = {
       method: 'get',
       url: `${this.repositoryUrl}/contracts/full_match/${chainId}/${address}/metadata.json`
