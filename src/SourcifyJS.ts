@@ -12,6 +12,11 @@ interface Contract {
   name: string
 }
 
+interface IGetABIReturn {
+  name: string;
+  abi: object;
+}
+
 export default class SourcifyJS {
   serverUrl: string
   repositoryUrl: string
@@ -37,9 +42,9 @@ export default class SourcifyJS {
     let response = await axios(config)
     return response.data
   }
-  public async getABI(address: string, chainId: number) {
+  public async getABI(address: string, chainId: number): Promise<IGetABIReturn> {
     const response = await this.metadata(address, chainId)
-    return {abi: response.output.abi, name: Object.values(response.settings.compilationTarget)[0]}
+    return {abi: response.output.abi, name: Object.values(response.settings.compilationTarget)[0] as string}
   }
   public async inputFiles(file: Buffer) {
     const data = new FormData();
