@@ -14,7 +14,7 @@ interface Contract {
 
 interface IGetABIReturn {
   name: string;
-  abi: object;
+  abi: object[];
 }
 
 export default class SourcifyJS {
